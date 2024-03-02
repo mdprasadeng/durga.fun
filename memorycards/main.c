@@ -26,8 +26,8 @@ int main(void) {
     int show[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int lastSelected = -1;
     int currentSelected = -1;
-    int displayTimer;
-    int DISPLAY_FOR_FRAMES = 60;
+    int displayTimer = -1;
+    int DISPLAY_FOR_FRAMES =  120;
 
     InitWindow(screenX, screenY, "raylib [core] example - basic window");
 
@@ -55,8 +55,20 @@ int main(void) {
 
     while (!WindowShouldClose()) {
         //Timers
-        if (displayTimer >= 0) {
+        if (displayTimer > 0) {
             displayTimer -= 1;
+        }
+        if (displayTimer == 0) {
+            displayTimer = -1;
+            if (order[currentSelected] == order[lastSelected]) {
+                show[currentSelected] = 1 ;
+                show[lastSelected] = 1 ;
+            } else {
+                show[currentSelected] = 0 ;
+                show[lastSelected] = 0 ;
+            }
+            lastSelected = -1;
+            currentSelected = -1;
         }
 
         Vector2  mousePosition = GetMousePosition();
@@ -64,8 +76,22 @@ int main(void) {
         ClearBackground(RAYWHITE);
         int offX = screenX / 2 - cardSizePlusGap - cardSize - cardsGap / 2;
         int offY = screenY / 2 - cardSizePlusGap - cardSize - cardsGap / 2;
+        Rectangle timerRect = {offX ,
+                               offY - cardSizePlusGap/2,
+                               cardSizePlusGap * 4 - cardsGap,
+                               cardSize / 2};
+        DrawRectangleRoundedLines(timerRect,
+                                  0.15f,
+                                  8,
+                                  3,
+                                  BLACK);
         if (displayTimer >= 0 ) {
-            
+
+            timerRect.width -= timerRect.width * (DISPLAY_FOR_FRAMES - displayTimer) / DISPLAY_FOR_FRAMES;
+            DrawRectangleRounded(timerRect,
+                                      0.15f,
+                                      8,
+                                      GREEN);
         }
         for (int i = 0; i < gridSize; ++i) {
             for (int j = 0; j < gridSize; ++j) {
@@ -84,15 +110,8 @@ int main(void) {
                             } else if(lastSelected != offsetPosition){
                                 currentSelected = offsetPosition;
                                 displayTimer = DISPLAY_FOR_FRAMES;
-                                if (order[currentSelected] == order[lastSelected]) {
-
-                                } else {
-
-                                }
                             }
-                            if (show[offsetPosition]) {
-                                show[offsetPosition] = 0;
-                            } else {
+                            if (show[offsetPosition] == 0) {
                                 show[offsetPosition] = 1;
                             }
 
