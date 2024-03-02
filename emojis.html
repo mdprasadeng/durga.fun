@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="emojis.css">
+    <script type="text/javascript">
+        function renderAgain(elem) {
+            let text = [...elem.value]
+            let atlas = document.getElementById("atlas")
+            atlas.innerHTML = ""
+            for(let i=0; i< 8*8; i++) {
+                atlas.innerHTML += "<div>" + text[i % text.length] +"</div>"
+            }
+        }
+    </script>
+</head>
+<body style="background: lightseagreen">
+<textarea name="emojis" oninput="renderAgain(this)" style="margin-bottom: 5px; font-size: 50px" ></textarea>
+  <div id="atlas" style="display: flex; flex-wrap: wrap; width: 1024px; height: 1024px; background:white" class="noto-color same">
+    <div>🍏</div>
+    <div>🍎</div>
+    <div>🍐</div>
+    <div>🍊</div>
+    <div>🍋</div>
+    <div>🍌</div>
+    <div>🍉</div>
+    <div>🍇</div>
+  </div>
+</body>
+</html>
